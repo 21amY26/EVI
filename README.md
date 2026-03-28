@@ -142,7 +142,7 @@ pip install -r requirements.txt
 ## ▶️ Usage
 
 ```bash
-python main.py
+python3 main.py
 ```
 
 ### Menu Options:
@@ -150,9 +150,8 @@ python main.py
 ```
 1. Forensic Scan
 2. Live Monitor
-3. Hybrid Mode
-4. Demo Simulation
-5. Help / Explanation
+3. Hybrid MoDE
+4. Help
 0. Exit
 ```
 

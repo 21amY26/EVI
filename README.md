@@ -133,7 +133,7 @@ Result: CRITICAL
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/kasmya/evi-evidence-inspector.git
+git clone https://github.com/21amY26/EVI.git
 cd evi-evidence-inspector
 pip install -r requirements.txt
 ```

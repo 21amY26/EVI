@@ -1,0 +1,16 @@
+2025-03-28 10:00:00 System start
+2025-03-28 10:00:30 User login
+2025-03-28 10:01:10 Access granted
+2025-03-28 10:02:00 File opened
+2025-03-28 10:02:45 File edited
+
+2025-03-28 10:10:00 Suspicious activity detected
+2025-03-28 10:10:10 File deleted
+2025-03-28 10:10:20 User logout
+
+2025-03-28 10:25:00 System restart
+2025-03-28 10:25:30 User login
+2025-03-28 10:26:00 Access granted
+
+2025-03-28 11:00:00 Unknown process triggered
+2025-03-28 11:00:05 System alert

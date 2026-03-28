@@ -1,4 +1,3 @@
-# 📄 README — EVI (Evidence Investigator)
 <img width="338" height="457" alt="Screenshot 2026-03-29 at 01 32 28" src="https://github.com/user-attachments/assets/75914717-b921-487e-b2a8-159e56551159" />
 
 ## 🤖 EVI — Evidence Investigator

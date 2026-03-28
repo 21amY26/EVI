@@ -1,7 +1,5 @@
 <img width="338" height="457" alt="Screenshot 2026-03-29 at 01 32 28" src="https://github.com/user-attachments/assets/75914717-b921-487e-b2a8-159e56551159" />
 
-## 🤖 EVI — Evidence Investigator
-
 **Detecting the logs that aren't there.**
 
 EVI is a cybersecurity-focused log analysis tool that identifies **missing or tampered log entries** by detecting **unexpected gaps in timestamps**. Instead of only analyzing what exists, EVI highlights **what should exist but doesn't**—a critical blind spot in traditional systems.

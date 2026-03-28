@@ -131,7 +131,7 @@ Result: CRITICAL
 
 ```bash
 git clone https://github.com/21amY26/EVI.git
-cd evi-evidence-inspector
+cd EVI
 pip install -r requirements.txt
 ```
 

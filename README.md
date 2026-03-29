@@ -104,18 +104,8 @@ Logs → Parsing → Normalization → Timeline Reconstruction
 
 ## 📸 Sample Output
 
-```text
-🤖 EVI
-"Starting forensic scan..."
+![WhatsApp Image 2026-03-29 at 12 47 09](https://github.com/user-attachments/assets/96cf4bd3-3d3e-4a82-b0fa-99dc4740a73d)
 
-• Parsing timestamps...
-• Checking sequence...
-⚠ Gap detected: 7 minutes
-
-Result: CRITICAL
-
-"This gap may indicate deleted or tampered logs."
-```
 
 ---
 

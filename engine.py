@@ -24,6 +24,7 @@ class EngineStats:
     gaps_by_sev: Dict[str, int] = None
     total_lines: int = 0
     total_missing_time: float = 0.0
+    success: bool=True
 
     def __post_init__(self):
         if self.gaps is None:
@@ -48,6 +49,18 @@ def parse_timestamp(line: str) -> datetime:
     for pattern in patterns:
         match = re.search(pattern, line)
         if match:
+            formats = [
+                '%Y-%m-%d %H:%M:%S',
+                '%d/%b/%Y:%H:%M:%S',
+                '%b %d %H:%M:%S'
+            ]
+
+            for fmt in formats:
+                try:
+                    return datetime.strptime(match.group(1), fmt)
+                except:
+                    continue
+        if match:
             try:
                 return datetime.strptime(match.group(1), '%Y-%m-%d %H:%M:%S')
             except:
@@ -60,6 +73,7 @@ def detect_gaps(filepath: str, threshold: float = 60.0) -> EngineStats:
     if not clean_path.endswith(('.log', '.txt')) or not os.path.exists(clean_path) or not os.path.isfile(clean_path):
         console.print(f"[bold red]Error:[/] Unsupported file type: {clean_path}")
         console.print("[bold yellow]Using demo data instead...[/]")
+        stats.notes='Invalid file, using demo data'
         time.sleep(1.5)
         stats.total_lines = 8
         fake_gap = Gap(1, datetime.now(), datetime.now(), 2000, 'CRITICAL', 'Demo gap')

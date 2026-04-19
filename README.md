@@ -104,6 +104,10 @@ Logs → Parsing → Normalization → Timeline Reconstruction
 
 ## 📸 Sample Output
 
+
+https://github.com/user-attachments/assets/130c30aa-3084-4ba0-a8ea-d4ceaa789478
+
+
 ![WhatsApp Image 2026-03-29 at 12 47 09](https://github.com/user-attachments/assets/96cf4bd3-3d3e-4a82-b0fa-99dc4740a73d)
 ![WhatsApp Image 2026-03-29 at 12 46 54](https://github.com/user-attachments/assets/496cb717-1db0-47b4-a622-2d564811b408)
 ![WhatsApp Image 2026-03-29 at 12 46 34](https://github.com/user-attachments/assets/6724f9ff-3622-4166-bd8d-0826ef6034f7)

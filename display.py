@@ -32,7 +32,14 @@ def print_stats(stats: EngineStats, mode: str = "Scan"):
     console.print(f"[bold bright_magenta]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/]")
     console.print(f"[bold white] 📊 {mode} Results[/]")
     console.print(f"[bold bright_magenta]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/]")
+    if not stats.success:
+        console.print(f"  [bold red]Error:[/] {stats.error}")
+        console.print(f"[bold bright_magenta]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/]")
+        console.print()
+        return
     console.print(f"  [bold green]Logs Loaded       :[/]  [green]{stats.total_lines:,}[/]")
+    if stats.unparsed_lines:
+        console.print(f"  [bold yellow]Unparsed Lines    :[/]  [yellow]{stats.unparsed_lines:,}[/]")
     console.print(f"  [bold cyan]Gaps Detected     :[/]  [{'red bold' if stats.gaps else 'dim'}]{len(stats.gaps)}[/]")
     console.print(f"  [bold orange1]Total Missing Time:[/]  [orange1]{stats.total_missing_time:.0f}s[/]")
 
@@ -57,11 +64,33 @@ def print_stats(stats: EngineStats, mode: str = "Scan"):
                 f"[{color} bold]{gap.severity}[/]  "
                 f"[dim]{gap.notes}[/]"
             )
-    else:
+    elif not stats.reversals:
         console.print(f"  [green]✓ No gaps found — log appears clean.[/]")
+
+    if stats.reversals:
+        console.print()
+        console.print(f"  [bold red]Out-of-Order Timestamps: {len(stats.reversals)}[/]")
+        for rev in stats.reversals:
+            color = {'LOW': 'green', 'MEDIUM': 'yellow', 'CRITICAL': 'red'}.get(rev.severity, 'white')
+            console.print(
+                f"    [{color}]#{rev.id:02d}[/]  "
+                f"[dim]{rev.start_time.strftime('%H:%M:%S')} → {rev.end_time.strftime('%H:%M:%S')}[/]  "
+                f"[{color}]-{rev.duration:.0f}s[/]  "
+                f"[{color} bold]{rev.severity}[/]  "
+                f"[dim]{rev.notes}[/]"
+            )
 
     console.print(f"[bold bright_magenta]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/]")
     console.print()
+
+
+def ask_duration(default=30):
+    """Ask how many seconds to follow the log for."""
+    answer = Prompt.ask("[cyan]Watch for how many seconds?[/]", default=str(default))
+    try:
+        return max(1.0, float(answer))
+    except ValueError:
+        return float(default)
 
 
 def show_dashboard(evi_message='"Tell me what you\'d like to do."'):
@@ -91,7 +120,7 @@ def run_dashboard():
             )
             from forensic import run_forensic
             loading_bar(1.5, 100)
-            stats = run_forensic(filepath, 60.0)
+            stats = run_forensic(filepath)
             print_stats(stats, "Forensic Scan")
             Prompt.ask("[dim]Press ENTER to return to menu[/dim]", default="")
 
@@ -100,9 +129,9 @@ def run_dashboard():
                 "[cyan]Enter log file path[/] (default test_logs/tampered.log)",
                 default="test_logs/tampered.log"
             )
+            duration = ask_duration()
             from live import run_live
-            stats = run_live(filepath, 60.0)
-            loading_bar(1, 50)
+            stats = run_live(filepath, duration=duration)
             print_stats(stats, "Live Monitor")
             Prompt.ask("[dim]Press ENTER to return to menu[/dim]", default="")
 
@@ -111,9 +140,9 @@ def run_dashboard():
                 "[cyan]Enter log file path[/] (default test_logs/tampered.log)",
                 default="test_logs/tampered.log"
             )
+            duration = ask_duration()
             from hybrid import run_hybrid
-            stats = run_hybrid(filepath, 60.0)
-            loading_bar(2, 100)
+            stats = run_hybrid(filepath, duration=duration)
             print_stats(stats, "Hybrid")
             Prompt.ask("[dim]Press ENTER to return to menu[/dim]", default="")
 

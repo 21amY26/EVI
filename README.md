@@ -33,13 +33,16 @@ EVI addresses this by:
 ### ⏱️ Gap Detection Engine
 
 * Calculates time differences between consecutive log entries
-* Flags gaps exceeding defined thresholds
+* Flags gaps longer than 30 seconds (configurable)
+* Flags **out-of-order timestamps** (a line older than the one before it), a common sign of edited or injected entries
+* Infers the year for Syslog timestamps (which have none), including Dec → Jan rollover
+* Counts lines with no recognisable timestamp
 
 ### 🚨 Severity Classification
 
 | Severity | Condition    | Meaning                         |
 | -------- | ------------ | ------------------------------- |
-| LOW      | < 60 seconds | Normal system delay             |
+| LOW      | 30–60 seconds | Normal system delay            |
 | MEDIUM   | 1–5 minutes  | Suspicious activity             |
 | CRITICAL | > 5 minutes  | Possible log tampering/deletion |
 
@@ -93,12 +96,14 @@ Logs → Parsing → Normalization → Timeline Reconstruction
 
 ### 2. Live Monitor
 
-* Continuously monitors logs (streaming/tail mode)
-* Detects gaps in real time
+* Follows the file like `tail -f`, starting from the end
+* Flags gaps and reversals in new lines as they arrive
+* Handles partially written lines and file truncation/rotation
 
 ### 3. Hybrid Mode
 
-* Combines historical scan + live monitoring
+* Scans the existing file, then keeps following it
+* A gap between the last old line and the first new line is also caught
 
 ---
 
@@ -133,6 +138,21 @@ pip install -r requirements.txt
 
 ---
 
+## ✅ Testing & Benchmark
+
+```bash
+pip install -r requirements-dev.txt
+python3 -m pytest
+```
+
+```bash
+python3 benchmark.py
+```
+
+The benchmark writes a synthetic 1M-line log with randomly injected gaps and out-of-order lines, then reports how many were detected and the scan throughput.
+
+---
+
 ## ▶️ Usage
 
 ```bash
@@ -144,7 +164,7 @@ python3 main.py
 ```
 1. Forensic Scan
 2. Live Monitor
-3. Hybrid MoDE
+3. Hybrid Mode
 4. Help
 0. Exit
 ```
@@ -164,6 +184,7 @@ python3 main.py
 ## ⚠️ Limitations
 
 * Assumes timestamp integrity within remaining logs
+* Cannot detect deletions shorter than the gap threshold
 * Does not yet correlate across distributed systems
 * Requires structured or semi-structured logs
 
